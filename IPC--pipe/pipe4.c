@@ -19,17 +19,17 @@ int main(int agrc, char* agrv[]){
 	}
 
 	if(pid == 0){
+		//replace stdout with the write end of the pipe
 		dup2(pipefds[1],STDOUT_FILENO);
+		//close read to pipe, in child
 		close(pipefds[0]);
 		execlp("ls","ls",NULL);
-		exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
 	}else{
 		dup2(pipefds[0],STDIN_FILENO);
 		close(pipefds[1]);
 		execlp("less","less",NULL);
-		exit(EXIT_FAILURE);
+		exit(EXIT_SUCCESS);
 
 	}
 }
-
-	
